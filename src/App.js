@@ -33,9 +33,32 @@ function App() {
   const [currentBoard, setCurrentBoard] = useState(null);
   const [currentItem, setCurrentItem] = useState(null);
 
+  function addNewTask(e) {
+    const taskText = prompt('What do you want to add?');
+    console.log(boards[0].items.length);
+    let newObj = {
+      id: boards[0].items.length,
+      title: taskText,
+    };
+    boards[0].items.push(newObj);
+    setBoards(boards.map((b) => b));
+  }
+
+  function removeTask(e, board, item) {
+    e.preventDefault();
+    setBoards(
+      boards.map((b) => {
+        if (b === board) {
+          b.items.splice(b.items.indexOf(item), 1);
+        }
+        return b;
+      })
+    );
+  }
+
   function dragOverHandler(e) {
     e.preventDefault();
-    if (e.target.className == 'item') {
+    if (e.target.className === 'item') {
       e.target.style.boxShadow = '0 4px 3px gray';
     }
   }
@@ -100,29 +123,36 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {boards.map((board) => (
-        <div
-          className="board"
-          onDragOver={(e) => dragOverHandler(e)}
-          onDrop={(e) => dropCardHandler(e, board)}
-        >
-          <div className="board__title">{board.title}</div>
-          {board.items.map((item) => (
-            <div
-              onDragOver={(e) => dragOverHandler(e)}
-              onDragLeave={(e) => dragLeaveHandler(e)}
-              onDragStart={(e) => dragStartHandler(e, board, item)}
-              onDragEnd={(e) => dragEndHandler(e)}
-              onDrop={(e) => dropHandler(e, board, item)}
-              draggable={true}
-              className="item"
-            >
-              {item.title}
-            </div>
-          ))}
-        </div>
-      ))}
+    <div className="container">
+      <div className="App">
+        {boards.map((board) => (
+          <div
+            className="board"
+            onDragOver={(e) => dragOverHandler(e)}
+            onDrop={(e) => dropCardHandler(e, board)}
+          >
+            <div className="board__title">{board.title}</div>
+            {board.items.map((item) => (
+              <div
+                onDragOver={(e) => dragOverHandler(e)}
+                onDragLeave={(e) => dragLeaveHandler(e)}
+                onDragStart={(e) => dragStartHandler(e, board, item)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDrop={(e) => dropHandler(e, board, item)}
+                onContextMenu={(e) => removeTask(e, board, item)}
+                draggable={true}
+                className="item"
+              >
+                {item.title}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <button className="addButton" onClick={(e) => addNewTask(e)}>
+        add&nbsp;new&nbsp;task
+      </button>
+      <span>rmb&nbsp;item&nbsp;to&nbsp;remove&nbsp;it</span>
     </div>
   );
 }
