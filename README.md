@@ -1,5 +1,5 @@
 # About
-drag-and-drop cards via react w/o add/remove feature
+drag-and-drop items with react
 
 ## Available Scripts
 
