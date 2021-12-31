@@ -1,5 +1,7 @@
 # About
-drag-and-drop items with react
+drag-and-drop items with react<br/>
+
+latest live build: https://react-trello-two.vercel.app/<br/>
 
 ## Available Scripts
 
